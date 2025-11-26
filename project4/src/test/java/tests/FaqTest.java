@@ -1,15 +1,10 @@
 package tests;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import pages.MainPage;
 
 import java.util.ArrayList;
@@ -18,14 +13,12 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class FaqTest {
+public class FaqTest extends BaseTest {
 
-    private WebDriver driver;
     private MainPage mainPage;
 
     private int faqIndex;
     private String expectedAnswerText;
-    private String browserType;
 
     public FaqTest(int faqIndex, String expectedAnswerText, String browserType) {
         this.faqIndex = faqIndex;
@@ -59,17 +52,9 @@ public class FaqTest {
     }
 
     @Before
+    @Override
     public void setUp() {
-        if ("firefox".equals(browserType)) {
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
-        } else {
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        }
-        driver.manage().window().maximize();
-        driver.get("https://qa-scooter.praktikum-services.ru/"); // адрес тестируемого сайта
-
+        super.setUp();
         mainPage = new MainPage(driver);
     }
 
@@ -82,10 +67,4 @@ public class FaqTest {
         Assert.assertEquals("Текст ответа FAQ не соответствует ожидаемому (браузер: " + browserType + ")", expectedAnswerText, actualAnswerText);
     }
 
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-    }
 }

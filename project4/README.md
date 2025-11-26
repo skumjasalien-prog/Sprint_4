@@ -2,7 +2,7 @@
 
 Учебный проект по автоматизации тестирования с использованием Selenium WebDriver.
 
-## 🛠 Технологии
+## Технологии
 
 - Java 11
 - Maven
@@ -12,7 +12,7 @@
 
 **Браузеры:** Chrome, Firefox
 
-## 🚀 Запуск
+##  Запуск
 
 ```bash
 mvn clean install
@@ -24,7 +24,7 @@ mvn test
 - `src/main/java/pages/` - классы страниц (Page Object Model)
 - `src/test/java/tests/` - тесты
 
-## 🎯 Покрытие
+## Покрытие
 
 - ✅ Тесты FAQ (8 вопросов)
 - ✅ Тесты в Chrome и Firefox
