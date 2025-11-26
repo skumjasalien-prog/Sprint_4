@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 import java.util.List;
 
     public class MainPage {
@@ -17,10 +18,10 @@ import java.util.List;
         }
 
         // Кнопка "Заказать" вверху
-        private By orderTopButton = By.xpath("//button[text()='Заказать']");
+        private By orderTopButton = By.className("Button_Button__ra12g");
 
         // Кнопка "Заказать" внизу
-        private By orderBottomButton = By.xpath("//button[text()='Заказать']");
+        private By orderBottomButton = By.className("Button_Button__ra12g");
 
         // FAQ: стрелка выпадающего списка
         private By faqArrow = By.className("accordion__heading");
@@ -29,15 +30,29 @@ import java.util.List;
         private By faqAnswer = By.className("accordion__panel");
 
         public void clickOrderTopButton() {
-            WebElement button = driver.findElement(orderTopButton);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", button);
+            // Ищем первую кнопку "Заказать" (вверху страницы)
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(orderTopButton));
+            List<WebElement> buttons = driver.findElements(orderTopButton);
+            WebElement topButton = buttons.stream()
+                    .filter(button -> button.getText().equals("Заказать"))
+                    .findFirst()
+                    .orElse(buttons.get(0));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", topButton);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", topButton);
         }
 
         public void clickOrderBottomButton() {
-            WebElement button = driver.findElement(orderBottomButton);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", button);
-            button.click();
+            // Ищем последнюю кнопку "Заказать" (внизу страницы)
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+            wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(orderBottomButton));
+            List<WebElement> buttons = driver.findElements(orderBottomButton);
+            WebElement bottomButton = buttons.stream()
+                    .filter(button -> button.getText().equals("Заказать"))
+                    .reduce((first, second) -> second)
+                    .orElse(buttons.get(buttons.size() - 1));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", bottomButton);
+            bottomButton.click();
         }
 
         public void clickFaqArrow(int index) {
