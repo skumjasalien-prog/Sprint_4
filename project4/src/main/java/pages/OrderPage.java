@@ -38,6 +38,7 @@ public class OrderPage {
     private By orderButton = By.className("Button_Middle__1CSJM");
     private By confirmButton = By.xpath("//button[text()='Да']");
     private By orderSuccessMessage = By.className("Order_ModalHeader__3FDaJ");
+    private By confirmModal = By.xpath("//div[contains(@class, 'Modal')]//button[text()='Да']/ancestor::div[contains(@class, 'Modal')]");
 
     // Заполнение первой части формы
     public void fillFirstPartOfOrder(String name, String surname, String address, String metro, String phone) {
@@ -142,5 +143,22 @@ public class OrderPage {
     public String getOrderSuccessMessage() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(orderSuccessMessage));
         return driver.findElement(orderSuccessMessage).getText();
+    }
+
+    // Проверка, что модальное окно подтверждения закрылось
+    public boolean isConfirmModalClosed() {
+        try {
+            // Ждем, пока модальное окно с кнопкой "Да" станет невидимым
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(confirmButton));
+            return true;
+        } catch (Exception e) {
+            // Если элемент не найден или невидим, значит окно закрыто
+            try {
+                return !driver.findElement(confirmButton).isDisplayed();
+            } catch (Exception ex) {
+                // Если элемент вообще не найден в DOM, значит окно закрыто
+                return true;
+            }
+        }
     }
 }

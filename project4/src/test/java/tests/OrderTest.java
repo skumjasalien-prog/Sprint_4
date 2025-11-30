@@ -129,6 +129,10 @@ public class OrderTest extends BaseTest {
         // Подтверждение заказа
         orderPage.clickOrderButton();
         orderPage.confirmOrder();
+        
+        // Проверка, что модальное окно подтверждения закрылось после нажатия кнопки
+        Assert.assertTrue("Модальное окно подтверждения не закрылось после нажатия кнопки подтверждения заказа", 
+                orderPage.isConfirmModalClosed());
 
         // Проверка успешного создания заказа
         Assert.assertTrue("Заказ не был создан успешно", orderPage.isOrderSuccess());
